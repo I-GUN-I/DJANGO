@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Signup{% endblock %}
+{% block nav %}{% endblock %}
+
+{% block content %}
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card" style="width: 400px;">
+            <div class="card-header text-center">
+                <h4>Sign Up</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Book List
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mb-4 text-center">Book List</h1>
+            <ul class="list-group">
+                {% for i in context %}
+                    <li class="list-group-item mb-3">
+                        <h5 class="mb-1"><strong>{{ i.title }}</strong></h5>
+                        <p class="mb-1">Author: <em>{{ i.author }}</em></p>
+                        <p class="mb-1">Status: 
+                            {% if i.status == 'borrowed' %}
+                                <span class="badge bg-warning text-dark">Borrowed</span>
+                            {% else %}
+                                <span class="badge bg-success">Available</span>
+                            {% endif %}
+                        </p>
+                    </li>
+                {% empty %}
+                    <div class="alert alert-info text-center" role="alert">
+                        No books available.
+                    </div>
+                {% endfor %}
+            </ul>
+    </div>
+{% endblock %}
