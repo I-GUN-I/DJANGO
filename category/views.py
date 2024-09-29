@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import Category
-from .form import AddCategoryForm
+from .form import CategoryForm
 
 class CategoryListView(View):
     def get(self, request):
@@ -10,12 +10,24 @@ class CategoryListView(View):
 
 class AddCategoryView(View):
     def get(self, request):
-        form = AddCategoryForm()
+        form = CategoryForm()
         return render(request, 'category_add.html', {'form': form})
 
     def post(self, request):
-        form = AddCategoryForm(data=request.POST)
+        form = CategoryForm(data=request.POST)
         if form.is_valid():
             form.save()
             return redirect('category-list')
-        return render(request, 'category_add.html', {'form': form})
+
+class EditCategoryView(View):
+    def get(self, request, pk):
+        category = get_object_or_404(Category, pk=pk)
+        form = CategoryForm(instance=category)
+        return render(request, 'category_edit.html', {'form': form, 'category': category})
+
+    def post(self, request, pk):
+        category = get_object_or_404(Category, pk=pk)
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('category-list')
