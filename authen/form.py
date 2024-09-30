@@ -17,5 +17,4 @@ class SignUpForm(forms.ModelForm):
 
         if pwd_1 and pwd_2 and pwd_1 != pwd_2:
             raise ValidationError("Passwords do not match")
-
         return cleaned_data

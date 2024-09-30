@@ -1,34 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Title{% endblock %}</title>
     {% load bootstrap5 %}
     {% bootstrap_css %}
-    {% bootstrap_javascript %}
     <style>
         body {
             background-color: #D6CDAF;
-            color: #333;
+            color: #000000;
             font-family: 'Georgia', serif;
         }
-        .card {
-            background-color: rgba(255, 255, 255, 0.9);
-            border: 1px solid #ccc;
-        }
-        .card-header {
-            background-color: #f8f9fa;
-        }
-        .btn-primary {
-            background-color: #0485f7;
-            border-color: #00000000;
-        }
-        .btn-primary:hover {
-            background-color: #5a6268;
-        }
-        .navbar-custom {
+        .nav-custom {
             background-color: #463300;
         }
     </style>
@@ -36,10 +20,12 @@
 
 <body>
     {% block nav %}
-    <nav class="navbar navbar-expand-lg navbar-custom p-3">
+    <nav class="navbar navbar-expand nav-custom">
         <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{% url 'book-list' %}"><b>Books</b></a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="{% url 'category-list' %}"><b>Categories</b></a>
                     </li>
@@ -59,7 +45,6 @@
                         </li>
                     {% endif %}
                 </ul>
-            </div>
         </div>
     </nav>
     {% endblock %}

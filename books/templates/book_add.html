@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Add Book
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card p-4 shadow-sm">
+        <h1 class="mb-4 text-center">Add New Book</h1>
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                {{ form.title.label_tag }}
+                {{ form.title.errors }}
+                {{ form.title }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.author.label_tag }}
+                {{ form.author.errors }}
+                {{ form.author }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.description.label_tag }}
+                {{ form.description.errors }}
+                {{ form.description }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.categories.label_tag }}
+                {{ form.categories.errors }}
+                {{ form.categories }}
+            </div>
+
+            <div class="mb-5">
+                {{ form.status.label_tag }}
+                {{ form.status.errors }}
+                {{ form.status }}
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary btn-block">Add Book</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

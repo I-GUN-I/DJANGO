@@ -5,23 +5,24 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1 class="mb-4 text-center">Book List</h1>
-            <ul class="list-group">
-                {% for i in context %}
-                    <li class="list-group-item mb-3">
+    <div class="container-fluid">
+        <h1 class="mb-4 text-center text-uppercase fs-1">Our Books</h1>
+        <a href="{% url 'book-add' %}" class="btn btn-primary mb-3">Add Book</a>
+            <ul class="list-group ">
+                {% for i in books %}
+                    <li class="list-group-item mb-3 list-group-item-action">
                         <h5 class="mb-1"><strong>{{ i.title }}</strong></h5>
-                        <p class="mb-1">Author: <em>{{ i.author }}</em></p>
+                        <p class="mb-1">Author: {{ i.author }}</p>
                         <p class="mb-1">Status: 
-                            {% if i.status == 'borrowed' %}
-                                <span class="badge bg-warning text-dark">Borrowed</span>
+                            {% if i.status == 'Unavailable' %}
+                                <span class="badge bg-warning">Unavailable</span>
                             {% else %}
                                 <span class="badge bg-success">Available</span>
                             {% endif %}
                         </p>
                     </li>
                 {% empty %}
-                    <div class="alert alert-info text-center" role="alert">
+                    <div class="alert alert-secondary text-center" role="alert">
                         No books available.
                     </div>
                 {% endfor %}
