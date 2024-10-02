@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
 from .form import SignUpForm
-from django.db import IntegrityError
 
 
 class LoginView(View):
@@ -18,16 +16,15 @@ class LoginView(View):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user() 
-            login(request,user)
+            login(request, user)
             return redirect('book-list') 
-
-        return render(request,'login.html', {"form":form})
+        return render(request, 'login.html', {"form":form})
 
 
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        return redirect('login')
+        return redirect('book-list')
 
 class SignUpView(View):
     def get(self, request):
@@ -37,18 +34,16 @@ class SignUpView(View):
     def post(self, request):
         form = SignUpForm(data=request.POST)
         if form.is_valid():
-            try:
-                user = form.save(commit=False)
-                pwd = form.cleaned_data['password_1']
-                user.set_password(pwd)
-                user.save()
+            user = form.save(commit=False)
+            pwd = form.cleaned_data['password_1']
 
-                group = Group.objects.get(name='Borrower')
-                user.groups.add(group)
+            user.set_password(pwd)
+            user.save()
 
-                login(request, user)
-                return redirect('book-list') 
-            except IntegrityError:
-                messages.error(request, "Username already exists")
+            group = Group.objects.get(name='Borrower')
+            user.groups.add(group)
+
+            login(request, user)
+            return redirect('book-list')
 
         return render(request, 'signup.html', {'form': form})

@@ -5,12 +5,15 @@
 
 {% block content %}
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card" style="width: 400px;">
+
+        <div class="card">
+
             <div class="card-header text-center">
                 <h4>Sign Up</h4>
             </div>
+
             <div class="card-body">
-                <form method="POST">
+                <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <div class="text-center">
@@ -18,10 +21,12 @@
                     </div>
                 </form>
             </div>
+
             <div class="card-footer text-center">
-                <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                <span>Already have an account? <a href="{% url 'login' %}">Login</a></span>
             </div>
         </div>
+    
     </div>
 {% endblock %}
 

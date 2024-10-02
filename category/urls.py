@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import CategoryListView, AddCategoryView, EditCategoryView
+from .views import CategoryListView, AddCategoryView, EditCategoryView, DeleteCategoryView
 
 urlpatterns = [
     path('', CategoryListView.as_view(), name='category-list'),
     path('add/', AddCategoryView.as_view(), name='category-add'),
-    path('edit/<int:pk>/', EditCategoryView.as_view(), name='category-edit'),
+    path('edit/<int:category_id>/', EditCategoryView.as_view(), name='category-edit'),
+    path('<int:category_id>/delete/', DeleteCategoryView.as_view(), name='category-delete'),
 ]

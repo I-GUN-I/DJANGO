@@ -6,6 +6,7 @@
     <title>{% block title %}Title{% endblock %}</title>
     {% load bootstrap5 %}
     {% bootstrap_css %}
+
     <style>
         body {
             background-color: #D6CDAF;
@@ -16,36 +17,39 @@
             background-color: #463300;
         }
     </style>
+
 </head>
 
 <body>
     {% block nav %}
     <nav class="navbar navbar-expand nav-custom">
+
         <div class="container-fluid">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{% url 'book-list' %}"><b>Books</b></a>
+                        <a class="nav-link text-light ms-4" href="{% url 'book-list' %}"><b>Books</b></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{% url 'category-list' %}"><b>Categories</b></a>
+                        <a class="nav-link text-light ms-4" href="{% url 'category-list' %}"><b>Categories</b></a>
                     </li>
                 </ul>
     
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <p class="nav-link text-light">Welcome, {{ user.username }}</p>
+                            <span class="nav-link text-light me-2" style="font-weight: bold">Welcome, {{ user.username }}</span >
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="{% url 'logout' %}"><b>Logout</b></a>
+                            <a class="nav-link text-light me-4" href="{% url 'logout' %}"><b>Logout</b></a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="{% url 'login' %}"><b>Login</b></a>
+                            <a class="nav-link text-light me-4" href="{% url 'login' %}"><b>Login</b></a>
                         </li>
                     {% endif %}
                 </ul>
         </div>
+
     </nav>
     {% endblock %}
     

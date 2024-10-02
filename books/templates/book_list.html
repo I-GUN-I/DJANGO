@@ -5,27 +5,47 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid">
         <h1 class="mb-4 text-center text-uppercase fs-1">Our Books</h1>
         <a href="{% url 'book-add' %}" class="btn btn-primary mb-3">Add Book</a>
-            <ul class="list-group ">
-                {% for i in books %}
-                    <li class="list-group-item mb-3 list-group-item-action">
-                        <h5 class="mb-1"><strong>{{ i.title }}</strong></h5>
-                        <p class="mb-1">Author: {{ i.author }}</p>
-                        <p class="mb-1">Status: 
-                            {% if i.status == 'Unavailable' %}
-                                <span class="badge bg-warning">Unavailable</span>
-                            {% else %}
-                                <span class="badge bg-success">Available</span>
-                            {% endif %}
-                        </p>
-                    </li>
-                {% empty %}
-                    <div class="alert alert-secondary text-center" role="alert">
-                        No books available.
+        <div class="row">
+            {% for i in books %}
+                <div class="col-4 mb-5">
+
+                    <div class="card">
+
+                        <div class="card-body">
+                            <h5 class="card-title fs-2 fw-bolder">{{ i.title }}</h5>
+                            <p class="card-text">{{ i.description }}</p>
+                            <p class="card-text">Author: {{ i.author }}</p>
+                            <p class="card-text">Categories: 
+                                    {% for category in i.categories.all %}
+                                        <span class="badge bg-dark">{{ category.name }}</span>
+                                    {% endfor %}
+                            </p>
+                            <p class="card-text">Status: 
+                                {% if i.status == 'Unavailable' %}
+                                    <span class="badge bg-warning text-dark">Unavailable</span>
+                                {% else %}
+                                    <span class="badge bg-success">Available</span>
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        {% if user.is_authenticated %}
+                        <div class="card-footer">
+                            <a href="{% url 'book-edit' i.id %}" class="btn btn-secondary">Edit</a>
+                            <a href="{% url 'book-delete' i.id %}" class="btn btn-danger ms-2">Delete</a>
+                            <a href="{% url 'book-edit' i.id %}" class="btn btn-success ms-2">Borrow</a>
+                        </div>
+                        {% endif %}
+
                     </div>
-                {% endfor %}
-            </ul>
-    </div>
+
+                </div>
+            {% empty %}
+                <div class="alert alert-secondary text-center" role="alert">
+                    No books available.
+                </div>
+            {% endfor %}
+        </div>
 {% endblock %}
