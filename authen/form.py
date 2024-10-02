@@ -5,12 +5,12 @@ from django.core.exceptions import ValidationError
 class SignUpForm(forms.ModelForm):
     password_1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(),
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
         help_text="Password must be at least five characters long."
     )
     password_2 = forms.CharField(
         label="Confirm Password",
-        widget=forms.PasswordInput(),
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
         help_text="Enter the same password as above."
     )
 
@@ -21,6 +21,11 @@ class SignUpForm(forms.ModelForm):
             'username': 'Must be unique.',
             'first_name': 'Enter your first name.',
             'last_name': 'Enter your last name.',
+        }
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
     def clean(self):
@@ -34,15 +39,22 @@ class SignUpForm(forms.ModelForm):
         pwd_2 = cleaned_data['password_2']
         if pwd_1 != pwd_2:
             raise ValidationError("Passwords do not match.")
-
         return cleaned_data
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['username', 'first_name', 'last_name', 'email']
         widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
+
+        def clean(self):
+            cleaned_data = super().clean()
+            username = cleaned_data['username']
+            if User.objects.filter(username=username).exists():
+                raise ValidationError("This username is already taken.")
+            return cleaned_data

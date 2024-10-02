@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
-from .form import SignUpForm
+from .form import SignUpForm, ProfileForm
 
 
 class LoginView(View):
-    
     def get(self, request):
         form = AuthenticationForm()
         return render(request, 'login.html', {"form": form})
@@ -47,3 +46,15 @@ class SignUpView(View):
             return redirect('book-list')
 
         return render(request, 'signup.html', {'form': form})
+
+class ProfileView(View):
+    def get(self, request):
+        form = ProfileForm(instance=request.user)
+        return render(request, 'profile.html', {'form': form})
+
+    def post(self, request):
+        form = ProfileForm(data=request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('book-list')
+        return render(request, 'profile.html', {'form': form})
