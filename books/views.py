@@ -8,6 +8,11 @@ class BookListView(View):
         books = Book.objects.all().order_by('title')
         return render(request, 'book_list.html', {'books': books})
 
+class BookDetailView(View):
+    def get(self, request, book_id):
+        book = get_object_or_404(Book, pk=book_id)
+        return render(request, 'book_view.html', {'book': book})
+
 class AddBookView(View):
     def get(self, request):
         form = BookForm()

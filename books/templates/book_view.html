@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Book Details
+{% endblock %}
+
+{% block content %}
+<div class="card">
+
+    <div class="card-header text-center">
+        <h2 class="card-title">{{ book.title }}</h2>
+    </div>
+
+    <div class="card-body">
+        <p><strong>Author:</strong> {{ book.author }}</p>
+
+        <p><strong>Description:</strong></p>
+        <p class="bg-light p-2">{{ book.description }}</p>
+
+        <p><strong>Categories:</strong></p>
+        <ul>
+            {% for category in book.categories.all %}
+            <li>{{ category.name }}</li>
+            {% empty %}
+            <li>No categories available</li>
+            {% endfor %}
+        </ul>
+
+        <p><strong>Status:</strong>
+            {% if book.status == 'Unavailable' %}
+            <span class="badge bg-warning text-dark">Unavailable</span>
+            {% else %}
+            <span class="badge bg-success">Available</span>
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="card-footer">
+        <a href="{% url 'book-list' %}" class="btn btn-primary">Back to Book List</a>
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'book-edit' book.id %}" class="btn btn-secondary ms-3">Edit</a>
+        <a href="{% url 'book-delete' book.id %}" class="btn btn-danger ms-3">Delete</a>
+
+        {% if book.status == 'Available' %}
+        <a href="{% url 'loan-add' book.id %}" class="btn btn-success ms-3">Borrow</a>
+        {% endif %}
+
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

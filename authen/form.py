@@ -5,27 +5,23 @@ from django.core.exceptions import ValidationError
 class SignUpForm(forms.ModelForm):
     password_1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        help_text="Password must be at least five characters long."
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password must be at least five characters long.'})
     )
     password_2 = forms.CharField(
         label="Confirm Password",
-        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
-        help_text="Enter the same password as above."
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter the same password as above.'})
     )
 
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name']
         help_texts = {
-            'username': 'Must be unique.',
-            'first_name': 'Enter your first name.',
-            'last_name': 'Enter your last name.',
+            'username': ''
         }
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your username must be unique.'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your first name.'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your last name.'}),
         }
 
     def clean(self):

@@ -6,5 +6,5 @@ class CategoryForm(forms.ModelForm):
         fields = ['name', 'description']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter category name'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter category description', 'rows': 4}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter category description'}),
         }
