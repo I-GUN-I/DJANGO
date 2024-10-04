@@ -9,6 +9,7 @@
         <form method="post">
             {% csrf_token %}
             {{ form.errors }}
+            
             <div class="mb-3">
                 {{ form.title.label_tag }}
                 {{ form.title.errors }}

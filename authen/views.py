@@ -55,6 +55,10 @@ class ProfileView(View):
     def post(self, request):
         form = ProfileForm(data=request.POST, instance=request.user)
         if form.is_valid():
+            pwd = form.cleaned_data['new_pwd']
+            if pwd:
+                request.user.set_password(pwd)
+                request.user.save()
             form.save()
             return redirect('book-list')
         return render(request, 'profile.html', {'form': form})

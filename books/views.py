@@ -33,7 +33,7 @@ class EditBookView(View):
 
     def post(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
-        form = BookForm(request.POST, instance=book)
+        form = BookForm(data=request.POST, instance=book)
         if form.is_valid():
             form.save()
             return redirect('book-list')

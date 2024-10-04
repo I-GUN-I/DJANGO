@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.contrib.auth.models import Permission
 from .models import Loan
@@ -6,7 +7,9 @@ from .form import LoanForm
 from books.models import Book
 from django.utils import timezone
 
-class LoanAddView(View):
+
+class LoanAddView(LoginRequiredMixin, View):
+    login_url = "/auth/"
     def get(self, request, book_id):
         book = get_object_or_404(Book, id=book_id)
         form = LoanForm(initial={'book': book})
@@ -29,21 +32,34 @@ class LoanAddView(View):
 
         return render(request, 'loan_add.html', {'form': form})
 
-class LoanListView(View):
+class LoanListView(LoginRequiredMixin, View):
+    login_url = "/auth/"
     def get(self, request):
         if request.user.has_perm('loan.view_loan'):
             loans = Loan.objects.all()
         else:
             loans = Loan.objects.filter(user=request.user)
-        
+
+        for i in loans:
+            if i.return_date < timezone.now().date() and not i.is_returned:
+                i.is_overdue = True
+                i.save()
+            else:
+                i.is_overdue = False
+                i.save()
+
         return render(request, 'loan_list.html', {'loans': loans})
 
-class LoanReturnView(View):
+class LoanReturnView(LoginRequiredMixin, View):
+    login_url = "/auth/"
+    
     def get(self, request, book_id, loan_id):
         loan = get_object_or_404(Loan, pk=loan_id)
         book = get_object_or_404(Book, pk=book_id)
 
         loan.is_returned = True
+        loan.is_overdue = False
+        loan.return_date = timezone.now().date()
         loan.save()
 
         book.status = 'Available'

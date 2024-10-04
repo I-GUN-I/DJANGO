@@ -8,3 +8,4 @@ class Loan(models.Model):
     borrow_date = models.DateField()
     return_date = models.DateField()
     is_returned = models.BooleanField(default=False)
+    is_overdue = models.BooleanField(default=False)

@@ -16,14 +16,16 @@
                 <li class="list-group-item mb-3 list-group-item-action">
                     <h2 class="mb-1 fw-bolder">{{ i.name }}</h2>
                     <p>{{ i.description }}</p>
-                    <p class="text-primary mb-1">Total Books: {{ i.book_set.count }}</p>
+                    <p class="text-primary mb-1">Books in this category: {{ i.book_set.count }}</p>
                     <ul>
                         {% for book in i.book_set.all %}
-                            <li>{{ book.title }} by {{ book.author }}</li>
+                            <li>
+                                <a href="{% url 'book-view' book.id %}">{{ book.title }}</a> by {{ book.author }}
+                            </li>
                         {% empty %}
                             <li>No books available in this category.</li>
                         {% endfor %}
-                    </ul>
+                    </ul>                    
 
                     <a href="{% url 'category-edit' i.id %}" class="btn btn-success mt-3">Edit</a>
                     <a href="{% url 'category-delete' i.id %}" class="btn btn-danger mt-3 ms-3">Delete</a>
