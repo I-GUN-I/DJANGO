@@ -83,7 +83,7 @@ class BookListAPI(APIView):
 class BookDetailAPI(APIView):
     def get(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
-        serializer = BookSerializer(book)
+        serializer = BookSerializer(instance=book)
         return Response(serializer.data)
 
     def put(self, request, book_id):
