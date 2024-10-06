@@ -7,9 +7,11 @@
 {% block content %}
         <h1 class="mb-4 text-center text-uppercase fs-1">Categories</h1>
 
+        {% if perms.category.add_category %}
         <div class="mb-3">
             <a href="{% url 'category-add' %}" class="btn btn-primary">Add Category</a>
         </div>
+        {% endif %}
 
         <ul class="list-group">
             {% for i in categories %}
@@ -17,18 +19,24 @@
                     <h2 class="mb-1 fw-bolder">{{ i.name }}</h2>
                     <p>{{ i.description }}</p>
                     <p class="text-primary mb-1">Books in this category: {{ i.book_set.count }}</p>
+                    
                     <ul>
                         {% for book in i.book_set.all %}
                             <li>
-                                <a href="{% url 'book-view' book.id %}">{{ book.title }}</a> by {{ book.author }}
+                                <a href="{% url 'book-detail' book.id %}">{{ book.title }}</a> by {{ book.author }}
                             </li>
                         {% empty %}
                             <li>No books available in this category.</li>
                         {% endfor %}
                     </ul>                    
-
+                    
+                    {% if perms.category.change_category %}
                     <a href="{% url 'category-edit' i.id %}" class="btn btn-success mt-3">Edit</a>
+                    {% endif %}
+
+                    {% if perms.category.delete_category %}
                     <a href="{% url 'category-delete' i.id %}" class="btn btn-danger mt-3 ms-3">Delete</a>
+                    {% endif %}
                 </li>
 
             {% empty %}

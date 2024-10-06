@@ -6,7 +6,11 @@
 
 {% block content %}
         <h1 class="mb-4 text-center text-uppercase fs-1">Our Books</h1>
+
+        {% if perms.books.add_book %}
         <a href="{% url 'book-add' %}" class="btn btn-primary mb-3">Add Book</a>
+        {% endif %}
+
         <div class="row">
             {% for i in books %}
                 <div class="col-4 mb-5">
@@ -33,7 +37,7 @@
                         </div>
 
                         <div class="card-footer">
-                            <a href="{% url 'book-view' i.id %}" class="btn btn-secondary">View</a>
+                            <a href="{% url 'book-detail' i.id %}" class="btn btn-secondary">View</a>
                         </div>
                     </div>
                 </div>

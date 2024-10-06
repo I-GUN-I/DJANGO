@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .form import SignUpForm, ProfileForm
 
 
@@ -47,7 +48,8 @@ class SignUpView(View):
 
         return render(request, 'signup.html', {'form': form})
 
-class ProfileView(View):
+class ProfileView(LoginRequiredMixin, View):
+    login_url = "/auth/"
     def get(self, request):
         form = ProfileForm(instance=request.user)
         return render(request, 'profile.html', {'form': form})
@@ -59,6 +61,7 @@ class ProfileView(View):
             if pwd:
                 request.user.set_password(pwd)
                 request.user.save()
+            
             form.save()
             return redirect('book-list')
         return render(request, 'profile.html', {'form': form})

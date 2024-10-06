@@ -1,32 +1,31 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Add Category
+Add Category
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card p-5">
-        <h1 class="mb-4 text-center">Add New Category</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.errors }}
-            <div class="mb-3">
-                {{ form.name.label_tag }}
-                {{ form.name.errors }}
-                {{ form.name }}
-            </div>
+<div class="card p-3">
+    <h1 class="mb-4 text-center">Add New Category</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.errors }}
+        <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name.errors }}
+            {{ form.name }}
+        </div>
 
-            <div class="mb-3">
-                {{ form.description.label_tag }}
-                {{ form.description.errors }}
-                {{ form.description }}
-            </div>
+        <div class="mb-3">
+            {{ form.description.label_tag }}
+            {{ form.description.errors }}
+            {{ form.description }}
+        </div>
 
-            <div class="mb-3">
-                <button type="submit" class="btn btn-primary btn-block">Add Category</button>
-            </div>
-        </form>
-    </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary btn-block">Add Category</button>
+            <a href="{% url 'category-list' %}" class="btn btn-secondary ms-4">Cancel</a>
+        </div>
+    </form>
 </div>
 {% endblock %}

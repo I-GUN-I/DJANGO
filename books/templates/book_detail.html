@@ -15,7 +15,7 @@ Book Details
         <p><strong>Author:</strong> {{ book.author }}</p>
 
         <p><strong>Description:</strong></p>
-        <p class="bg-light p-2">{{ book.description }}</p>
+        <p>{{ book.description }}</p>
 
         <p><strong>Categories:</strong></p>
         <ul>
@@ -36,16 +36,20 @@ Book Details
     </div>
 
     <div class="card-footer">
-        <a href="{% url 'book-list' %}" class="btn btn-primary">Back to Book List</a>
+        <a href="{% url 'book-list' %}" class="btn btn-secondary">Go Back</a>
 
-        {% if user.is_authenticated %}
-        <a href="{% url 'book-edit' book.id %}" class="btn btn-secondary ms-3">Edit</a>
-        <a href="{% url 'book-delete' book.id %}" class="btn btn-danger ms-3">Delete</a>
-
-        {% if book.status == 'Available' %}
-        <a href="{% url 'loan-add' book.id %}" class="btn btn-success ms-3">Borrow</a>
+        {% if perms.books.change_book %}
+            <a href="{% url 'book-edit' book.id %}" class="btn btn-primary ms-3">Edit</a>
         {% endif %}
 
+        {% if perms.books.delete_book %}
+            <a href="{% url 'book-delete' book.id %}" class="btn btn-danger ms-3">Delete</a>
+        {% endif %}
+
+        {% if book.status == 'Available' %}
+            {% if perms.loan.add_loan %}
+                <a href="{% url 'loan-add' book.id %}" class="btn btn-success ms-3">Borrow</a>
+            {% endif %}
         {% endif %}
     </div>
 

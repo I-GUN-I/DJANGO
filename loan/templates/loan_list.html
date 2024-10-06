@@ -5,7 +5,11 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="mb-4 text-center text-uppercase fs-1">Your Loans</h1>
+    {% if perms.loan.view_loan %}
+    <h1 class="mb-4 text-center text-uppercase fs-1">User's Loans</h1>
+    {% else %}
+    <h1 class="mb-4 text-center text-uppercase fs-1">{{ user.username }}'s Loans</h1>
+    {% endif %}
 
     <table class="table table-striped">
         <thead>
@@ -44,7 +48,7 @@
                         {% endif %}
                     </td>
 
-                    {% if perms.loan.view_loan %}
+                    {% if perms.loan.change_loan %}
                     <td>{{ i.user.username }}</td>
                     <td>
                         {% if not i.is_returned %}

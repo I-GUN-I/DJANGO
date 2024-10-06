@@ -1,15 +1,15 @@
-from django import forms
+from rest_framework import serializers
 from .models import Category
-from django.core.exceptions import ValidationError
 
-class CategoryForm(forms.ModelForm):
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'description']
+
+class CategoryPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['name', 'description']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter category name'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter category description'}),
-        }
 
     def clean(self):
         cleaned_data = super().clean()
