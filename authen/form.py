@@ -95,6 +95,6 @@ class ProfileForm(forms.ModelForm):
 
         if pwd_1 != pwd_2:
             raise ValidationError("Passwords do not match.")
-        
+
         return cleaned_data
 

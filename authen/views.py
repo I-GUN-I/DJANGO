@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .form import SignUpForm, ProfileForm
-
+from rest_framework.authentication import TokenAuthentication
 
 class LoginView(View):
     def get(self, request):
@@ -19,7 +19,6 @@ class LoginView(View):
             login(request, user)
             return redirect('book-list') 
         return render(request, 'login.html', {"form":form})
-
 
 class LogoutView(View):
     def get(self, request):
@@ -65,3 +64,6 @@ class ProfileView(LoginRequiredMixin, View):
             form.save()
             return redirect('book-list')
         return render(request, 'profile.html', {'form': form})
+
+class MyTokenAuthentication(TokenAuthentication):
+    keyword = "Bearer"

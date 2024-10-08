@@ -7,6 +7,8 @@ from .serializers import BookSerializer, BookPostSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly 
+from .permissions import BookPermission
 
 class BookListView(View):
     def get(self, request):
@@ -68,6 +70,7 @@ class DeleteBookView(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 ### API ###
 class BookListAPI(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, BookPermission]
     def get(self, request):
         books = Book.objects.all()
         serializer = BookSerializer(instance=books, many=True)
@@ -81,13 +84,16 @@ class BookListAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BookDetailAPI(APIView):
+    permission_classes = [IsAuthenticated, BookPermission]
     def get(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
+        self.check_object_permissions(request, book)
         serializer = BookSerializer(instance=book)
         return Response(serializer.data)
 
     def put(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
+        self.check_object_permissions(request, book)
         serializer = BookPostSerializer(data=request.data, instance=book)
         if serializer.is_valid():
             serializer.save()
@@ -96,6 +102,7 @@ class BookDetailAPI(APIView):
 
     def delete(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
+        self.check_object_permissions(request, book)
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
