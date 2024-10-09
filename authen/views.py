@@ -39,7 +39,7 @@ class SignUpView(View):
             user.set_password(pwd)
             user.save()
 
-            group = Group.objects.get(name='Borrower')
+            group = Group.objects.get(name='User')
             user.groups.add(group)
 
             login(request, user)

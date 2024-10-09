@@ -38,4 +38,4 @@ class LoanPostSerializer(serializers.ModelSerializer):
 class LoanReturnSerializer(serializers.ModelSerializer):
     class Meta:
         model = Loan
-        fields = ['id', 'book', 'user', 'return_date', 'is_returned']
+        fields = ['id', 'book', 'return_date', 'is_returned']

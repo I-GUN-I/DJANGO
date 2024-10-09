@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .permissions import LoanPermission
+from .permissions import LoanPermission, LoanDetailPermission
 
 class LoanListView(LoginRequiredMixin, View):
     login_url = "/auth/"
@@ -107,7 +107,7 @@ class LoanListAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoanDetailAPI(APIView):
-    permission_classes = [IsAuthenticated, LoanPermission]
+    permission_classes = [IsAuthenticated, LoanDetailPermission]
     def get(self, request, loan_id):
         loan = get_object_or_404(Loan, pk=loan_id)
         self.check_object_permissions(request, loan)

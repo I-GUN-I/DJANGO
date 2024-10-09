@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly 
-from .permissions import BookPermission
+from .permissions import BookPermission, BookDetailPermission
 
 class BookListView(View):
     def get(self, request):
@@ -84,7 +84,7 @@ class BookListAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BookDetailAPI(APIView):
-    permission_classes = [IsAuthenticated, BookPermission]
+    permission_classes = [IsAuthenticated, BookDetailPermission]
     def get(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
         self.check_object_permissions(request, book)

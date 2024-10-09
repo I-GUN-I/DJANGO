@@ -8,9 +8,10 @@ class LoanPermission(permissions.BasePermission):
             return request.user.has_perm("loan.add_loan")
         return False
 
+class LoanDetailPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method == "GET":
             return request.user.has_perm('loan.view_loan')
-        elif request.method == "PUT":
+        if request.method == "PUT":
             return request.user.has_perm("loan.change_loan")
         return False
