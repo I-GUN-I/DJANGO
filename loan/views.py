@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .permissions import LoanPermission, LoanDetailPermission
+from .permissions import LoanPermission
 
 class LoanListView(LoginRequiredMixin, View):
     login_url = "/auth/"
@@ -37,8 +37,7 @@ class LoanAddView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = ["loan.add_loan"]
 
     def get(self, request, book_id):
-        book = get_object_or_404(Book, id=book_id)
-        form = LoanForm(initial={'book': book})
+        form = LoanForm()
         return render(request, 'loan_add.html', {'form': form})
 
     def post(self, request, book_id):
@@ -46,16 +45,16 @@ class LoanAddView(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = LoanForm(data=request.POST)
         if book.status == 'Unavailable':
             return HttpResponse("This book is currently unavailable.", status=400)
-        else:
-            if form.is_valid():
-                with transaction.atomic():
-                    loan = form.save(commit=False)
-                    loan.user = request.user
-                    loan.borrow_date = timezone.now().date()
-                    loan.book = book
-                    loan.book.status = 'Unavailable'
-                    loan.book.save()
-                    loan.save()
+        
+        if form.is_valid():
+            with transaction.atomic():
+                loan = form.save(commit=False)
+                loan.user = request.user
+                loan.borrow_date = timezone.now().date()
+                loan.book = book
+                loan.book.status = 'Unavailable'
+                loan.book.save()
+                loan.save()
                 return redirect('loan-list')
         return render(request, 'loan_add.html', {'form': form})
 
@@ -107,7 +106,7 @@ class LoanListAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoanDetailAPI(APIView):
-    permission_classes = [IsAuthenticated, LoanDetailPermission]
+    permission_classes = [IsAuthenticated, LoanPermission]
     def get(self, request, loan_id):
         loan = get_object_or_404(Loan, pk=loan_id)
         self.check_object_permissions(request, loan)
@@ -120,12 +119,11 @@ class LoanDetailAPI(APIView):
         serializer = LoanReturnSerializer(data=request.data, instance=loan)
         if serializer.is_valid():
             with transaction.atomic():
-                book = serializer.validated_data['book']
                 if serializer.validated_data['is_returned']:
-                    book.status = 'Available'
+                    loan.book.status = 'Available'
                 else:
-                    book.status = 'Unavailable'
-                book.save()
+                    loan.book.status = 'Unavailable'
+                loan.book.save()
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)

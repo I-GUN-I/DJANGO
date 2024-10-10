@@ -25,5 +25,4 @@ class LoanForm(forms.ModelForm):
         if date_return > max_date:
             raise ValidationError("You can't borrow a book for more than 24 days.")
 
-
         return cleaned_data

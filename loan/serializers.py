@@ -38,4 +38,13 @@ class LoanPostSerializer(serializers.ModelSerializer):
 class LoanReturnSerializer(serializers.ModelSerializer):
     class Meta:
         model = Loan
-        fields = ['id', 'book', 'return_date', 'is_returned']
+        fields = ['id', 'return_date', 'is_returned']
+
+    def validate(self, data):
+        date_return = data['return_date']
+        date_borrow = self.instance.borrow_date
+        
+        if date_return < date_borrow:
+            raise serializers.ValidationError("This book return date is before being borrow.")
+
+        return data

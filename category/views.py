@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly 
-from .permissions import CategoryPermission, CategoryDetailPermission
+from .permissions import CategoryPermission
 
 class CategoryListView(View):
     def get(self, request):
@@ -76,7 +76,7 @@ class CategoryListAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CategoryDetailAPI(APIView):
-    permission_classes = [IsAuthenticated, CategoryDetailPermission]
+    permission_classes = [IsAuthenticated, CategoryPermission]
     def get(self, request, category_id):
         category = get_object_or_404(Category, pk=category_id)
         self.check_object_permissions(request, category)
