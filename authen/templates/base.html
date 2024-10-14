@@ -6,18 +6,8 @@
     <title>{% block title %}Title{% endblock %}</title>
     {% load bootstrap5 %}
     {% bootstrap_css %}
-
-    <style>
-        body {
-            background-color: #D6CDAF;
-            color: #000000;
-            font-family: 'Source Sans Pro', serif;
-        }
-        .nav-custom {
-            background-color: #463300;
-        }
-    </style>
-
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 
 <body>

@@ -1,0 +1,19 @@
+body {
+    background-color: #D6CDAF;
+    background-image: url('iStock-969066628.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #000000;
+    font-family: 'Source Sans Pro', serif;
+}
+
+.nav-custom {
+    background-color: #463300;
+}
+
+.header {
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+}

@@ -6,9 +6,9 @@
 
 {% block content %}
     {% if perms.loan.view_loan %}
-    <h1 class="mb-4 text-center text-uppercase fs-1">User's Loans</h1>
+    <h1 class="header mb-4 text-center text-uppercase fs-1" style="color: rgb(255, 255, 255); text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);">User's Loans</h1>
     {% else %}
-    <h1 class="mb-4 text-center text-uppercase fs-1">{{ user.username }}'s Loans</h1>
+    <h1 class="header mb-4 text-center text-uppercase fs-1">{{ user.username }}'s Loans</h1>
     {% endif %}
 
     <table class="table table-striped">

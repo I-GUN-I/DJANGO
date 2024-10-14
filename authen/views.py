@@ -60,7 +60,6 @@ class ProfileView(LoginRequiredMixin, View):
             if pwd:
                 request.user.set_password(pwd)
                 request.user.save()
-            
             form.save()
             return redirect('book-list')
         return render(request, 'profile.html', {'form': form})
