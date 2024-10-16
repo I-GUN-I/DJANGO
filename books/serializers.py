@@ -15,7 +15,11 @@ class BookPostSerializer(serializers.ModelSerializer):
     
     def validate(self, data):
         book_title = data['title']
-        if self.instance.title != book_title:
+        if self.instance is None:
             if Book.objects.filter(title=book_title).exists():
                 raise serializers.ValidationError("This book already exists.")
+        else:
+            if self.instance.title != book_title:
+                if Book.objects.filter(title=book_title).exists():
+                    raise serializers.ValidationError("This book already exists.")
         return data

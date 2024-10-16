@@ -90,11 +90,11 @@ class ProfileForm(forms.ModelForm):
             if User.objects.filter(email=mail).exists():
                 raise ValidationError("This email is already be use by another account.")
 
-        if len(pwd_1) < 5:
-            raise ValidationError("Your new Password must be at least five characters long.")
-
-        if pwd_1 != pwd_2:
-            raise ValidationError("Passwords do not match.")
+        if pwd_1 or pwd_2:
+            if len(pwd_1) < 5:
+                raise ValidationError("Your new Password must be at least five characters long.")
+            if pwd_1 != pwd_2:
+                raise ValidationError("Passwords do not match.")
 
         return cleaned_data
 

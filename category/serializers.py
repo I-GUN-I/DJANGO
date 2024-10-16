@@ -13,7 +13,11 @@ class CategoryPostSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         cat_name = data['name']
-        if self.instance.name != cat_name:
+        if self.instance is None:
             if Category.objects.filter(name=cat_name).exists():
                 raise serializers.ValidationError("This category already exists.")
+        else:
+            if self.instance.name != cat_name:
+                if Category.objects.filter(name=cat_name).exists():
+                    raise serializers.ValidationError("This category already exists.")
         return data
