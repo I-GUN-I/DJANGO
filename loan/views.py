@@ -18,9 +18,9 @@ class LoanListView(LoginRequiredMixin, View):
     login_url = "/auth/"
     def get(self, request):
         if request.user.has_perm('loan.view_loan'):
-            loans = Loan.objects.all()
+            loans = Loan.objects.all().order_by('-borrow_date')
         else:
-            loans = Loan.objects.filter(user=request.user)
+            loans = Loan.objects.filter(user=request.user).order_by('-borrow_date')
 
         for i in loans:
             if i.return_date < timezone.now().date() and not i.is_returned:
